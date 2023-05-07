@@ -49,7 +49,7 @@ const RegisterModal= () => {
       loginModal.onOpen();
     })
     .catch((error) => {
-      toast.error(error);
+      toast.error(error.message);
     })
     .finally(() => {
       setIsLoading(false);

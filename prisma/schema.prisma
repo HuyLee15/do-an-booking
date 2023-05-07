@@ -85,6 +85,7 @@ model Review {
   content String
   userId String @db.ObjectId
   listingId String @db.ObjectId
+  createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)

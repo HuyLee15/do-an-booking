@@ -1,5 +1,12 @@
 import prisma from "@/app/libs/prismadb";
 
+export interface IListingReview {
+  rate?: number;
+  content?: string;
+  userId?: string;
+  listingId?: string;
+}
+
 export interface IListingsParams {
   userId?: string;
   guestCount?: number;
@@ -11,20 +18,9 @@ export interface IListingsParams {
   category?: string;
 }
 
-export default async function getListings(
-  params: IListingsParams
-) {
+export default async function getListings(params: IListingsParams) {
   try {
-    const {
-      userId,
-      roomCount, 
-      guestCount, 
-      bathroomCount, 
-      locationValue,
-      startDate,
-      endDate,
-      category,
-    } = params;
+    const { userId, roomCount, guestCount, bathroomCount, locationValue, startDate, endDate, category } = params;
 
     let query: any = {};
 
@@ -38,20 +34,20 @@ export default async function getListings(
 
     if (roomCount) {
       query.roomCount = {
-        gte: +roomCount
-      }
+        gte: +roomCount,
+      };
     }
 
     if (guestCount) {
       query.guestCount = {
-        gte: +guestCount
-      }
+        gte: +guestCount,
+      };
     }
 
     if (bathroomCount) {
       query.bathroomCount = {
-        gte: +bathroomCount
-      }
+        gte: +bathroomCount,
+      };
     }
 
     if (locationValue) {
@@ -65,23 +61,23 @@ export default async function getListings(
             OR: [
               {
                 endDate: { gte: startDate },
-                startDate: { lte: startDate }
+                startDate: { lte: startDate },
               },
               {
                 startDate: { lte: endDate },
-                endDate: { gte: endDate }
-              }
-            ]
-          }
-        }
-      }
+                endDate: { gte: endDate },
+              },
+            ],
+          },
+        },
+      };
     }
 
     const listings = await prisma.listing.findMany({
       where: query,
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
     const safeListings = listings.map((listing) => ({
