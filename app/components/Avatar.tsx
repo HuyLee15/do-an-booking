@@ -7,12 +7,12 @@ interface AvatarProps {
   size?: number;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ src, size }) => {
+const Avatar: React.FC<AvatarProps> = ({ src }) => {
   return (
     <Image
-      className="rounded-full"
-      height={size ?? 30}
-      width={size ?? 30}
+      className="rounded-full w-[30px] h-[30px]"
+      width={30}
+      height={30}
       alt="Avatar"
       src={src || "/images/placeholder.jpg"}
     />

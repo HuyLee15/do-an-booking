@@ -92,6 +92,15 @@ const RegisterModal= () => {
         errors={errors}
         required
       />
+      <Input
+        id="phone"
+        label="Phone Number"
+        type="phone"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+      />
     </div>
   )
 

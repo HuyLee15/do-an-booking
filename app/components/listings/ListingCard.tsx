@@ -11,6 +11,8 @@ import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 import ClientOnly from "../ClientOnly";
+import Avatar from "@/app/components/Avatar";
+import { User } from "@prisma/client";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -20,6 +22,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
+  byUser?: User;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -30,6 +33,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   actionId = "",
   currentUser,
+  byUser,
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
@@ -110,6 +114,21 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <div className="font-semibold">$ {price.toLocaleString()}</div>
           {!reservation && <div className="font-light">/ night</div>}
         </div>
+        {byUser && (
+          <>
+            <hr />
+            <div className="flex justify-between items-center">
+              <div>
+                <Avatar src={byUser.image} />
+              </div>
+              <div>{byUser.name}</div>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-bold">Contact: </span>
+              <span>{byUser.phoneNumber ?? "--"}</span>
+            </div>
+          </>
+        )}
         {onAction && actionLabel && <Button disabled={disabled} small label={actionLabel} onClick={handleCancel} />}
       </div>
     </div>
