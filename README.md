@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
-**Node version 14.x**
+**Node version 16.x**
 
 ### Install packages
 
