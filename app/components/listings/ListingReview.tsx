@@ -19,7 +19,7 @@ interface ListingReviewProps {
 const ListingReview = ({ reviews, listingId }: ListingReviewProps) => {
   const router = useRouter();
 
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(5);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 

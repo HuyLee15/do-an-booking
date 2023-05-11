@@ -1,4 +1,4 @@
-# Full Stack Airbnb Clone
+# Full Stack Booking website
 
 ### Prerequisites
 
