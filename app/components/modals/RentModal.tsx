@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 import useRentModal from "@/app/hooks/useRentModal";
 
@@ -34,6 +34,8 @@ const RentModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [disabled, setDisabled] = useState(true);
+
+  const initInfo = useMemo(() => rentModal.initInfo, [rentModal.initInfo]);
 
   const {
     register,
@@ -65,6 +67,10 @@ const RentModal = () => {
   const title = watch("title");
   const description = watch("description");
   const price = watch("price");
+
+  useEffect(() => {
+    reset(initInfo);
+  }, [initInfo, reset]);
 
   useLayoutEffect(() => {
     switch (step) {
@@ -140,6 +146,28 @@ const RentModal = () => {
       return onNext();
     }
 
+    if (initInfo?.id) {
+      setIsLoading(true);
+
+      axios
+        .put(`/api/listings/${initInfo.id}`, data)
+        .then(() => {
+          toast.success("Listing updated!");
+          router.refresh();
+          reset();
+          setStep(STEPS.CATEGORY);
+          rentModal.onClose();
+        })
+        .catch(() => {
+          toast.error("Something went wrong.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+      return;
+    }
+    
     setIsLoading(true);
 
     axios
@@ -161,11 +189,10 @@ const RentModal = () => {
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
-      return "Create";
-    }
+      return initInfo ? "Update" : "Create";    }
 
     return "Next";
-  }, [step]);
+  }, [initInfo,step]);
 
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.CATEGORY) {
@@ -288,12 +315,15 @@ const RentModal = () => {
     <Modal
       disabled={isLoading || disabled}
       isOpen={rentModal.isOpen}
-      title="Add your space!"
+      title={initInfo ? "Update property" : "Add your space!"}
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-      onClose={rentModal.onClose}
+      onClose={() => {
+        rentModal.onClose();
+        setStep(STEPS.CATEGORY);
+      }}
       body={bodyContent}
     />
   );

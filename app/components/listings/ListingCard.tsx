@@ -10,7 +10,6 @@ import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 
 import HeartButton from "../HeartButton";
 import Button from "../Button";
-import ClientOnly from "../ClientOnly";
 import Avatar from "@/app/components/Avatar";
 import { User } from "@prisma/client";
 
@@ -18,6 +17,7 @@ interface ListingCardProps {
   data: SafeListing;
   reservation?: SafeReservation;
   onAction?: (id: string) => void;
+  onEdit?: (listing: SafeListing) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
@@ -34,6 +34,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionId = "",
   currentUser,
   byUser,
+  onEdit,
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
@@ -130,6 +131,17 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </>
         )}
         {onAction && actionLabel && <Button disabled={disabled} small label={actionLabel} onClick={handleCancel} />}
+        {onEdit && (
+          <Button
+            disabled={disabled}
+            small
+            label={"Edit"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(data);
+            }}
+          />
+        )}
       </div>
     </div>
   );

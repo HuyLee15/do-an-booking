@@ -42,7 +42,6 @@ const ProfilePageClient = ({ currentUser }: ProfilePageClientProps) => {
       shouldValidate: true,
     });
   };
-  console.log(watch("image"));
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);

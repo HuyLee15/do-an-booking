@@ -40,8 +40,6 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({ reservations, c
     [router]
   );
 
-  console.log(reservations);
-
   return (
     <Container>
       <Heading title="Reservations" subtitle="Bookings on your properties" />

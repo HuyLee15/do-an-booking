@@ -32,3 +32,34 @@ export async function DELETE(
 
   return NextResponse.json(listing);
 }
+
+export async function PUT(request: Request, { params }: { params: IParams }) {
+  const { listingId } = params;
+
+  const body = await request.json();
+  const { category, location, guestCount, roomCount, bathroomCount, imageSrc, price, title, description } =
+    body;
+
+  if (!listingId) {
+    throw new Error("Invalid ID");
+  }
+
+  const listing = await prisma.listing.update({
+    where: {
+      id: listingId,
+    },
+    data: {
+      category,
+      locationValue: location?.value ?? undefined,
+      guestCount,
+      roomCount,
+      bathroomCount,
+      imageSrc,
+      price: price ? parseInt(price, 10) : undefined,
+      title,
+      description,
+    },
+  });
+
+  return NextResponse.json(listing);
+}

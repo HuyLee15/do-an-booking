@@ -1,31 +1,30 @@
-import { Nunito } from 'next/font/google'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import Navbar from '@/app/components/navbar/Navbar';
-import LoginModal from '@/app/components/modals/LoginModal';
-import RegisterModal from '@/app/components/modals/RegisterModal';
-import SearchModal from '@/app/components/modals/SearchModal';
-import RentModal from '@/app/components/modals/RentModal';
+import { Nunito } from "next/font/google";
 
-import ToasterProvider from '@/app/providers/ToasterProvider';
+import Navbar from "@/app/components/navbar/Navbar";
+import LoginModal from "@/app/components/modals/LoginModal";
+import RegisterModal from "@/app/components/modals/RegisterModal";
+import SearchModal from "@/app/components/modals/SearchModal";
+import RentModal from "@/app/components/modals/RentModal";
 
-import './globals.css'
-import ClientOnly from './components/ClientOnly';
-import getCurrentUser from './actions/getCurrentUser';
+import ToasterProvider from "@/app/providers/ToasterProvider";
+
+import "./globals.css";
+import ClientOnly from "./components/ClientOnly";
+import getCurrentUser from "./actions/getCurrentUser";
 
 export const metadata = {
   title: 'Flyspaces',
   description: 'Flyspaces booking',
 }
 
-const font = Nunito({ 
-  subsets: ['latin'], 
+const font = Nunito({
+  subsets: ["latin"],
 });
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const currentUser = await getCurrentUser();
 
   return (
@@ -39,10 +38,8 @@ export default async function RootLayout({
           <RentModal />
           <Navbar currentUser={currentUser} />
         </ClientOnly>
-        <div className="pb-20 pt-28">
-          {children}
-        </div>
+        <div className="pb-20 pt-28">{children}</div>
       </body>
     </html>
-  )
+  );
 }
